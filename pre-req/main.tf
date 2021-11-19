@@ -2,17 +2,17 @@ provider "aws" {
   region = var.region
 }
 
-resource "aws_s3_bucket" "aws6-airgap" {
-  bucket = "aakulov-aws6-tfe-airgap"
+resource "aws_s3_bucket" "aws6-tfe" {
+  bucket = "aakulov-aws6-tfe"
   acl    = "private"
   force_destroy = true
   tags = {
-    Name = "aakulov-aws6-tfe-airgap"
+    Name = "aakulov-aws6-tfe"
   }
 }
 
-resource "aws_iam_role" "aakulov-aws6-iam-role-airgap" {
-  name = "aakulov-aws6-iam-role-ec2-s3-airgap"
+resource "aws_iam_role" "aakulov-aws6-iam-role-tfe" {
+  name = "aakulov-aws6-iam-role-ec2-s3-tfe"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -28,18 +28,18 @@ resource "aws_iam_role" "aakulov-aws6-iam-role-airgap" {
   })
 
   tags = {
-    tag-key = "aakulov-aws6-iam-role-airgap"
+    tag-key = "aakulov-aws6-iam-role-tfe"
   }
 }
 
-resource "aws_iam_instance_profile" "aakulov-aws6-iam-role-airgap" {
-  name = "aakulov-aws6-iam-role-airgap"
-  role = aws_iam_role.aakulov-aws6-iam-role-airgap.name
+resource "aws_iam_instance_profile" "aakulov-aws6-iam-role-tfe" {
+  name = "aakulov-aws6-iam-role-tfe"
+  role = aws_iam_role.aakulov-aws6-iam-role-tfe.name
 }
 
-resource "aws_iam_role_policy" "aakulov-aws6-iam-role-airgap" {
-  name = "aakulov-aws6-iam-role-airgap"
-  role = aws_iam_role.aakulov-aws6-iam-role-airgap.id
+resource "aws_iam_role_policy" "aakulov-aws6-iam-role-tfe" {
+  name = "aakulov-aws6-iam-role-tfe"
+  role = aws_iam_role.aakulov-aws6-iam-role-tfe.id
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -64,14 +64,14 @@ resource "aws_iam_role_policy" "aakulov-aws6-iam-role-airgap" {
         "Sid" : "VisualEditor1",
         "Effect" : "Allow",
         "Action" : "s3:*",
-        "Resource" : aws_s3_bucket.aws6-airgap.arn
+        "Resource" : aws_s3_bucket.aws6-tfe.arn
       }
     ]
   })
 }
 
-resource "aws_s3_bucket_public_access_block" "aakulov-aws6-iam-role-airgap" {
-  bucket = aws_s3_bucket.aws6-airgap.id
+resource "aws_s3_bucket_public_access_block" "aakulov-aws6-iam-role-tfe" {
+  bucket = aws_s3_bucket.aws6-tfe.id
 
   block_public_acls   = true
   block_public_policy = true
@@ -79,27 +79,13 @@ resource "aws_s3_bucket_public_access_block" "aakulov-aws6-iam-role-airgap" {
   ignore_public_acls = true
 }
 
-resource "aws_s3_bucket_object" "latesttargz" {
-  bucket = aws_s3_bucket.aws6-airgap.id
-  key = "latest.tar.gz"
-  source = "upload/latest.tar.gz"
-  etag = filemd5("upload/latest.tar.gz")
-}
-
 resource "aws_s3_bucket_object" "licenserli" {
-  bucket = aws_s3_bucket.aws6-airgap.id
+  bucket = aws_s3_bucket.aws6-tfe.id
   key = "license.rli"
   source = "upload/license.rli"
   etag = filemd5("upload/license.rli")
 }
 
-resource "aws_s3_bucket_object" "tfe557airgap" {
-  bucket = aws_s3_bucket.aws6-airgap.id
-  key = "tfe-557.airgap"
-  source = "upload/tfe-557.airgap"
-  etag = filemd5("upload/tfe-557.airgap")
-}
-
-output "s3_bucket_for_tf-ob-tfe-aws-airgap" {
-  value = aws_s3_bucket.aws6-airgap.arn
+output "s3_bucket_for_tf-ob-tfe-aws-tfe" {
+  value = aws_s3_bucket.aws6-tfe.arn
 }

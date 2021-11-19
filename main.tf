@@ -139,7 +139,7 @@ resource "aws_security_group" "aws6-internal-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
+  /*   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -151,7 +151,7 @@ resource "aws_security_group" "aws6-internal-sg" {
     to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.aakulov-aws6.id]
-  }
+  } */
 
   ingress {
     from_port   = 443
@@ -243,7 +243,7 @@ resource "aws_db_instance" "aws6" {
   name                   = "mydbtfe"
   username               = "postgres"
   password               = var.db_password
-  instance_class         = "db.t2.micro"
+  instance_class         = var.db_instance_type
   db_subnet_group_name   = aws_db_subnet_group.aws6.name
   vpc_security_group_ids = [aws_security_group.aakulov-aws6.id]
   skip_final_snapshot    = true
@@ -256,6 +256,11 @@ resource "aws_s3_bucket" "aws6" {
   bucket        = "aakulov-aws6-tfe-data"
   acl           = "private"
   force_destroy = true
+
+  versioning {
+    enabled = true
+  }
+
   tags = {
     Name = "aakulov-aws6-tfe-data"
   }
@@ -306,18 +311,10 @@ resource "aws_iam_role_policy" "aakulov-aws6-ec2-s3" {
         "Sid" : "VisualEditor0",
         "Effect" : "Allow",
         "Action" : [
-          "s3:ListStorageLensConfigurations",
-          "s3:ListAccessPointsForObjectLambda",
-          "s3:GetAccessPoint",
-          "s3:PutAccountPublicAccessBlock",
-          "s3:GetAccountPublicAccessBlock",
-          "s3:ListAllMyBuckets",
-          "s3:ListAccessPoints",
-          "s3:ListJobs",
-          "s3:PutStorageLensConfiguration",
-          "s3:CreateJob",
+          "s3:DeleteObject",
           "s3:GetObject",
           "s3:PutObject",
+          "s3:GetBucketLocation",
           "s3:ListBucket"
         ],
         "Resource" : "*"

@@ -15,6 +15,10 @@ variable "instance_type" {
   description = "Amazon EC2 instance type"
 }
 
+variable "smtp_instance_type" {
+  description = "Amazon EC2 smtp4dev instance type"
+}
+
 variable "db_instance_type" {
   description = "Amazon EC2 RDS instance type"
 }

@@ -24,7 +24,6 @@ resource "tls_self_signed_cert" "aws6" {
     common_name  = var.tfe_hostname
     organization = "aakulov sandbox"
   }
-
 }
 
 resource "aws_vpc" "vpc" {
@@ -353,6 +352,7 @@ data "template_cloudinit_config" "aws6_cloudinit" {
     content_type = "text/x-shellscript"
     content      = data.template_file.install_tfe_sh.rendered
   }
+
 }
 
 resource "aws_instance" "aws6" {
@@ -370,6 +370,22 @@ resource "aws_instance" "aws6" {
   }
   tags = {
     Name = "aakulov-aws6"
+  }
+}
+
+resource "aws_instance" "aws6_smtp" {
+  ami                         = var.smtp_ami
+  instance_type               = var.smtp_instance_type
+  key_name                    = var.key_name
+  vpc_security_group_ids      = [aws_security_group.aakulov-aws6.id]
+  subnet_id                   = aws_subnet.subnet_public1.id
+  associate_public_ip_address = true
+  metadata_options {
+    http_tokens   = "required"
+    http_endpoint = "enabled"
+  }
+  tags = {
+    Name = "aakulov-aws6-smtp4dev"
   }
 }
 

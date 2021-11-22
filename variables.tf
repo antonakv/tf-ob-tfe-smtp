@@ -7,6 +7,10 @@ variable "region" {
 variable "ami" {
   description = "Amazon EC2 ami created with Packer"
 }
+
+variable "smtp_ami" {
+  description = "Amazon EC2 ami with smtp4dev"
+}
 variable "instance_type" {
   description = "Amazon EC2 instance type"
 }

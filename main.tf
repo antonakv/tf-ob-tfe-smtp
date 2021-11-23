@@ -149,14 +149,14 @@ resource "aws_security_group" "aws6-internal-sg" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.aakulov-aws6.id]
+    security_groups = [aws_security_group.aws6-external-sg.id]
   }
 
   ingress {
     from_port       = 2525
     to_port         = 2525
     protocol        = "tcp"
-    security_groups = [aws_security_group.aakulov-aws6.id]
+    security_groups = [aws_security_group.aws6-external-sg.id]
   }
 
   ingress {
@@ -174,11 +174,11 @@ resource "aws_security_group" "aws6-internal-sg" {
   }
 }
 
-resource "aws_security_group" "aakulov-aws6" {
+resource "aws_security_group" "aws6-external-sg" {
   vpc_id = aws_vpc.vpc.id
-  name   = "aakulov-aws6-sg"
+  name   = "aws6-external-sg"
   tags = {
-    Name = "aakulov-aws6-sg"
+    Name = "aws6-external-sg"
   }
 
   ingress {
@@ -258,7 +258,7 @@ resource "aws_db_instance" "aws6" {
   password               = var.db_password
   instance_class         = var.db_instance_type
   db_subnet_group_name   = aws_db_subnet_group.aws6.name
-  vpc_security_group_ids = [aws_security_group.aakulov-aws6.id]
+  vpc_security_group_ids = [aws_security_group.aws6-external-sg.id]
   skip_final_snapshot    = true
   tags = {
     Name = "aakulov-aws6"
@@ -373,7 +373,7 @@ resource "aws_instance" "aws6" {
   ami                         = var.ami
   instance_type               = var.instance_type
   key_name                    = var.key_name
-  vpc_security_group_ids      = [aws_security_group.aakulov-aws6.id]
+  vpc_security_group_ids      = [aws_security_group.aws6-external-sg.id]
   subnet_id                   = aws_subnet.subnet_public1.id
   associate_public_ip_address = true
   user_data                   = data.template_cloudinit_config.aws6_cloudinit.rendered
@@ -391,7 +391,7 @@ resource "aws_instance" "aws6_smtp" {
   ami                         = var.smtp_ami
   instance_type               = var.smtp_instance_type
   key_name                    = var.key_name
-  vpc_security_group_ids      = [aws_security_group.aakulov-aws6.id]
+  vpc_security_group_ids      = [aws_security_group.aws6-external-sg.id]
   subnet_id                   = aws_subnet.subnet_public1.id
   associate_public_ip_address = true
   metadata_options {

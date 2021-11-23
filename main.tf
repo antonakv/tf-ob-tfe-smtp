@@ -138,7 +138,7 @@ resource "aws_security_group" "aws6-internal-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  /*   ingress {
+  ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -150,7 +150,14 @@ resource "aws_security_group" "aws6-internal-sg" {
     to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.aakulov-aws6.id]
-  } */
+  }
+
+  ingress {
+    from_port       = 2525
+    to_port         = 2525
+    protocol        = "tcp"
+    security_groups = [aws_security_group.aakulov-aws6.id]
+  }
 
   ingress {
     from_port   = 443
@@ -205,6 +212,13 @@ resource "aws_security_group" "aakulov-aws6" {
   ingress {
     from_port = 5432
     to_port   = 5432
+    protocol  = "tcp"
+    self      = true
+  }
+
+  ingress {
+    from_port = 2525
+    to_port   = 2525
     protocol  = "tcp"
     self      = true
   }
@@ -389,6 +403,26 @@ resource "aws_instance" "aws6_smtp" {
   }
 }
 
+resource "aws_route53_record" "aws6_smtp" {
+  zone_id         = "Z077919913NMEBCGB4WS0"
+  name            = var.smtp_hostname
+  type            = "A"
+  ttl             = "300"
+  records         = [aws_instance.aws6_smtp.public_ip]
+  allow_overwrite = true
+}
+
 output "aws_url" {
   value = aws_route53_record.aws6.name
+  description = "Terraform Enterprise URL"
+}
+
+output "smtp_web_url" {
+  value = aws_route53_record.aws6_smtp.name
+  description = "smtp4dev URL"
+}
+
+output "smtp_server_internal_addr_use_port_2525" {
+  value = aws_instance.aws6_smtp.private_ip
+  description = "smtp4dev internal ipv4"
 }

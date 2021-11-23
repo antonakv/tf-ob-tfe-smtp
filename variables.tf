@@ -51,3 +51,8 @@ variable "tfe_hostname" {
   type        = string
   description = "Terraform Enterprise hostname"
 }
+
+variable "smtp_hostname" {
+  type        = string
+  description = "smtp4dev hostname"
+}

@@ -15,6 +15,10 @@ variable "instance_type" {
   description = "Amazon EC2 instance type"
 }
 
+variable "smtp_instance_type" {
+  description = "Amazon EC2 smtp4dev instance type"
+}
+
 variable "db_instance_type" {
   description = "Amazon EC2 RDS instance type"
 }
@@ -46,4 +50,9 @@ variable "enc_password" {
 variable "tfe_hostname" {
   type        = string
   description = "Terraform Enterprise hostname"
+}
+
+variable "smtp_hostname" {
+  type        = string
+  description = "smtp4dev hostname"
 }

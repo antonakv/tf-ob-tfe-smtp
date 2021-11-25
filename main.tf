@@ -342,21 +342,6 @@ resource "aws_iam_role_policy" "aakulov-aws6-ec2-s3" {
   })
 }
 
-data "template_file" "settings_json" {
-  template = file("templates/settings.json.tpl")
-  vars = {
-    enc_password  = var.enc_password
-    hostname      = var.tfe_hostname
-    pgsqlhostname = aws_db_instance.aws6.address
-    pgsqlpassword = var.db_password
-    pguser        = aws_db_instance.aws6.username
-    s3bucket      = aws_s3_bucket.aws6.bucket
-    s3region      = var.region
-    cert_pem      = tls_self_signed_cert.aws6.cert_pem
-    key_pem       = tls_private_key.aws6.private_key_pem
-  }
-}
-
 data "template_file" "install_tfe_sh" {
   template = file("templates/install_tfe.sh.tpl")
   vars = {

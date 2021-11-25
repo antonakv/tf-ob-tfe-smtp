@@ -52,7 +52,9 @@ Resolving deltas: 100% (1/1), done.
 cd tf-ob-tfe-smtp
 ```
 
-- Create file terraform.tfvars with following content
+- Create file `terraform.tfvars` with following content
+
+> you can use `terraform.tfvars.sample` as starting point
 
 ```
 key_name           = "aakulov"

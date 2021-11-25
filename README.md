@@ -85,7 +85,56 @@ Follow `pre-req/README.md` manual to prepare assets on Amazon S3 required for th
 terraform init
 ```
 
-Sample result
+
+- Run the `terraform apply`
+
+```
+$ terraform apply                      
+
+```
+
+
+
+- Open URL [https://tfe6.anton.hashicorp-success.com:8800](https://tfe6.anton.hashicorp-success.com:8800) in the browser accepting self signed certificates.
+
+![Self signed](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image1.png)
+
+- Enter the password `Password1#` and click `Unlock`
+
+![Unlock](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image1.1.png)
+
+- Click `Open`
+
+![Open](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image2.png)
+
+- Fill all the field and click `Create an account`
+
+![Create an account](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image3.png)
+
+- Create new organization called `test1`
+
+![Create a new organization](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image5.png)
+
+- Click User avatar and select Admin
+
+![Click Admin](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image7.png)
+
+- Click SMTP
+
+![Click Admin](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image8.png)
+
+- Fill the fields of the SMTP page. Host value take from the terraform output called `smtp_server_internal_addr_use_port_2525`. And click `Save SMTP settings`
+
+![SMTP](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image10.png)
+
+- Open the URL from the `smtp_web_url` terraform output and see if email was sent
+
+![smtp4dev](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image9.png)
+
+
+# Sample output
+
+- `terraform init`
 
 ```
 $ terraform init
@@ -119,11 +168,8 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-- Run the `terraform apply`
-
+- `terraform apply`
 ```
-$ terraform apply                      
-
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
  <= read (data resources)
@@ -1306,39 +1352,3 @@ aws_url = "tfe6.anton.hashicorp-success.com"
 smtp_server_internal_addr_use_port_2525 = "10.5.2.19"
 smtp_web_url = "smtptfe6.anton.hashicorp-success.com"
 ```
-
-- Open URL [https://tfe6.anton.hashicorp-success.com:8800](https://tfe6.anton.hashicorp-success.com:8800) in the browser accepting self signed certificates.
-
-![Self signed](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image1.png)
-
-- Enter the password `Password1#` and click `Unlock`
-
-![Unlock](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image1.1.png)
-
-- Click `Open`
-
-![Open](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image2.png)
-
-- Fill all the field and click `Create an account`
-
-![Create an account](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image3.png)
-
-- Create new organization called `test1`
-
-![Create a new organization](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image5.png)
-
-- Click User avatar and select Admin
-
-![Click Admin](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image7.png)
-
-- Click SMTP
-
-![Click Admin](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image8.png)
-
-- Fill the fields of the SMTP page. Host value take from the terraform output called `smtp_server_internal_addr_use_port_2525`. And click `Save SMTP settings`
-
-![SMTP](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image10.png)
-
-- Open the URL from the `smtp_web_url` terraform output and see if email was sent
-
-![smtp4dev](https://github.com/antonakv/tf-ob-tfe-smtp/raw/main/images/image9.png)
